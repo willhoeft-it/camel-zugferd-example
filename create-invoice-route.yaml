@@ -1,0 +1,57 @@
+- beans:
+    # This bean is a workaround for FOPs terrible inability to work with relative file paths
+    - name: fopFactory
+      type: org.apache.fop.apps.FopFactory
+      factoryBean: com.willhoeftit.camel.fop.RelativeLoadingFopFactoryBuilder
+      factoryMethod: createFopFactory
+      constructors:
+        0: "camel-zugferd-example/config/fopconfig.xml"
+# "route" can be omitted (top level element "- from"), but we prefer to set an id.
+- route: 
+    id: "zugferdPdfInvoiceGeneration"
+    from:
+      uri: "direct:invoice"
+      # Move the incoming body into inputXml so we can use it twice. This will also clear the body (weird).
+      variableReceive: "inputXml"
+      steps:
+        - log: "ZugFERD PDF Invoice Generation, route ${routeId}"
+        - log: "User directory: ${sys.user.dir}"
+        - setBody:
+            # Recover the body. Fun fact: setting the body will also clear any headers...
+            variable: "inputXml"
+        - to:
+            description: "Create factur-x.xml"
+            uri: "xslt-saxon:createFactur-x_1_0_07.xslt"
+        - to:
+            uri: "file:work"
+            parameters:
+              fileName: "factur-x.xml"
+        - setBody:
+            variable: "inputXml"
+        - to:
+            description: "Create XSLT:FO"
+            uri: "xslt-saxon:createFoPdf.xslt"
+        - to:
+            description: "Create ZugFERD PDF"
+            uri: "fop:application/pdf"
+            parameters:
+              # lazyStartProducer: true
+              # fopconfig.xml is read when the route is *initialized*, before it is even started or executed. If not existing, Camel startup fails even when route is disabled. "lazy" won't help either.
+              #   FOP path references are also a total mess. (Only) here the "/" prefix is important even for relative paths, otherwise the absolute(!) paths inside fopconfig.xml will be messed up.
+              # userConfigURL: "file:/../work/fopconfig.xml"  # would be created by the initialization route with the project specific paths.
+              # So we use the fopFactory bean workaround to rewrite the file references relative to the config file.
+              fopFactory: "#bean:fopFactory"
+        - to:
+            uri: "file:work"
+            parameters:
+              fileName: "invoice.pdf"
+        # This requires "pdftk" to be installed
+        # Unlike "to: file" this requires the output folder to exist. It is created by the initialization route.
+        - to:
+            description: "Add stationary PDF background"
+            uri: "exec:pdftk"
+            parameters:
+                args: "work/invoice.pdf multistamp camel-zugferd-example/Musterbrief_bp.pdf output outbox/invoice_bp.pdf"
+                exitValues: "0"
+                useStderrOnEmptyStdout: true
+        - log: "${body}"

@@ -1,0 +1,19 @@
+<fop version="1.0">
+  <base>DUMMY</base>
+  <font-base>DUMMY</font-base>
+  <renderers>
+    <renderer mime="application/pdf">
+      <!-- Keep in sync with explicit PDF meta data  -->
+      <pdf-a-mode>PDF/A-3b</pdf-a-mode>
+      <fonts>
+        <!-- ClasspathLoadingFopFactoryBuilder allows to reference font paths relative to this file, but adds other complexity -->
+        <font embed-url="file:../fonts/NotoSans-Regular.ttf" embedding-mode="subset">
+            <font-triplet name="Noto Sans Regular" style="normal" weight="normal" simulate-style="true"/>
+        </font>
+        <font embed-url="file:../fonts/NotoSans-Medium.ttf" embedding-mode="subset">
+            <font-triplet name="Noto Sans Medium" style="normal" weight="normal" simulate-style="true"/>
+        </font>
+      </fonts>
+    </renderer>
+  </renderers>
+</fop>

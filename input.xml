@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<invoice>
+    <id>20249999</id>
+    <date>2024-10-17</date>
+    <title>Rechnung Beauftragung Datenmigration, 1234A, September 2024</title>
+    <letterOpening>Sehr geehrter Herr Bohnsen,
+
+ich erlaube mir Ihnen auftragsgemäß folgende Rechnung zu stellen.</letterOpening>
+    <letterFinish>Bitte überweisen Sie die genannte Summe mit Bezugnahme auf die Rechnungsnummer bis zum 16.11.2024 ohne Abzüge auf unser unten angegebenes Konto.
+
+Wir freuen uns auf eine weiterhin erfolgreiche Zusammenarbeit.
+
+Mit freundlichen Grüßen,
+
+Martha Muster</letterFinish>
+    <customerAddress>
+        <name>Lecker Mungobohnenvertrieb KGaA</name>
+        <addressLine>Buchhaltung</addressLine>
+        <addressLine>Sackgasse 123D</addressLine>
+        <postCode>98765</postCode>
+        <city>Allerhandshausen</city>
+    </customerAddress>
+    <projectReference>1234A</projectReference>
+    <deliveryDate type="month">2024-09-30</deliveryDate>
+    <lineItem>
+        <productId>9</productId>
+        <description>Software-Entwicklung Spezial</description>
+        <quantity>123</quantity>
+        <unit>h</unit>
+        <unitPrice>150.00</unitPrice>
+        <lineTotal>18450.00</lineTotal>
+    </lineItem>
+    <netTotal>18450.00</netTotal>
+    <vat percentage="19">3505.50</vat>
+    <grossTotal>21955.50</grossTotal>
+    <dueDate>2024-11-16</dueDate>
+
+    <creditor>
+        <address>			 
+            <name>Musterhaft GmbH</name>
+            <addressLine>Beispielallee 99C</addressLine>
+            <postCode>12345</postCode>
+            <city>Nudelfingen</city>
+        </address>
+        <director>Martha Muster</director>
+        <companyRegistry>Registergericht Nudelfingen</companyRegistry>
+        <companyRegistrationId>HRB 1234567</companyRegistrationId>
+        <ibanID>DE91 1000 0000 0123 4567 89</ibanID>
+        <vatId>DE123456789</vatId>
+        <email>rechnung@example.com</email>
+    </creditor>
+</invoice>

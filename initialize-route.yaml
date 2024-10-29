@@ -1,0 +1,48 @@
+# Only run once on Camel JBang startup to initialize the output directory.
+# BUT, while in DEV mode, it will be executed whenever we save a change. This often comes handy, but should be considered.
+
+- route:
+    id: "initializeZugferdPdfInvoiceGeneration"
+    # Start this route before all others
+    startupOrder: 1
+    from:
+      # Run only once, as soon as possible. "runOnce" is just the name we give to the scheduler.
+      uri: "timer:runOnce"
+      parameters:
+        repeatCount: 1
+        delay: -1
+      steps:
+        - log: "Initialize ZugFERD PDF Generation, route ${routeId}"
+
+        # Just for reference an attempt to create the FOP configuration on start up. Fails because fopconfig.xml is read even before
+        # any route is started:
+          # preparing the dummy fopconfig.xml, setting the absolute paths in it
+          # loading additional content from a file to body
+          #- pollEnrich:
+          #    description: "Prepare FOP. Load base fopconfig.xml"
+          #    timeout: 0
+              #  Yes, this is weird: "constant" here loads something dynamically via an expression into the body.
+              #  Also, the file will be deleted (even though "delete" is supposed to be false as default), unless noop=true.
+              #  idempotent=false allows to read the same file multiple times.
+          #    constant: "file:camel-zugferd-example/config?fileName=fopconfig.xml&noop=true&idempotent=false"
+          #- setHeader:
+          #    name: param.camelRoutePath
+          #    simple: "${sys.user.dir}/camel-zugferd-example"
+          #- to:
+          #    description: "Prepare FOP. Prepare to be used fopconfig.xml"
+          #    uri: "xslt-saxon:prepareFopconfig.xslt"
+          #- log: "Header camelRoutePath: ${header.param.camelRoutePath}"
+          # Writing to a file will also create the directory if necessary
+          #- to:
+          #    uri: "file:work"
+          #    parameters:
+          #      fileName: "fopconfig.xml"
+
+        # Create an empty file in the output directory
+        - setBody:
+            constant: ""
+        - to:
+            uri: "file:outbox"
+            parameters:
+              fileName: ".empty"
+        - log: "Initialization done"
