@@ -11,10 +11,22 @@
       <fo:declarations>
         <x:xmpmeta xmlns:x="adobe:ns:meta/">
           <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-            <!-- PDF/A 3b conformance. Keep in sync with configuration in fopconfig.xml! -->
-            <rdf:Description xmlns:pdfaid="http://www.aiim.org/pdfa/ns/id/" rdf:about="">
-              <pdfaid:part>3</pdfaid:part>
-              <pdfaid:conformance>B</pdfaid:conformance>
+            <rdf:Description xmlns:dc="http://purl.org/dc/elements/1.1/" rdf:about="">
+              <dc:title>
+                <rdf:Alt>
+                  <rdf:li xml:lang="x-default"><xsl:value-of select="concat(/invoice/creditor/address/name, ': Rechnung ', /invoice/id)"/></rdf:li>
+                </rdf:Alt>
+              </dc:title>
+              <dc:creator>
+                <rdf:Seq>
+                  <rdf:li><xsl:value-of select="/invoice/creditor/address/name"/></rdf:li>
+                </rdf:Seq>
+              </dc:creator>
+              <dc:description>
+                <rdf:Alt>
+                  <rdf:li xml:lang="x-default"><xsl:value-of select="/invoice/title"/></rdf:li>
+                </rdf:Alt>
+              </dc:description>
             </rdf:Description>
             <rdf:Description xmlns:xmp="http://ns.adobe.com/xap/1.0/" rdf:about="">
               <xmp:CreatorTool>Willhöft IT-Beratung GmbH, Camel ZugFERD Route 0.1</xmp:CreatorTool>
