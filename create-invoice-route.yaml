@@ -1,4 +1,15 @@
 - beans:
+    # Bug FOP-3217: (only) if we use Saxon somewhere, FOP 2.10 creates invalid XML in the PDF meta stream (lost nested namespace attributes for "xmlns:pdfaProperty", "xmlns:pdfaSchema", weird element names).
+    # Workaround: we explicitly set the usual system XSLT transformer as a system property to override the Saxon transformer factory.
+    #   Luckily this does not affect the xslt-saxon endpoints, as they seem to explicitly instantiate the Saxon factory.
+    - name: "_dummySystemProperty"
+      type: java.lang.String
+      factoryBean: java.lang.System
+      factoryMethod: setProperty
+      constructors:
+        0: "javax.xml.transform.TransformerFactory"
+        # This is valid for OpenJDK 21. This could be different for other environments.
+        1: "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl"
     # This bean is a workaround for FOPs terrible inability to work with relative file paths
     - name: fopFactory
       type: org.apache.fop.apps.FopFactory
@@ -54,4 +65,3 @@
                 args: "work/invoice.pdf multistamp camel-zugferd-example/Musterbrief_bp.pdf output outbox/invoice_bp.pdf"
                 exitValues: "0"
                 useStderrOnEmptyStdout: true
-        - log: "${body}"

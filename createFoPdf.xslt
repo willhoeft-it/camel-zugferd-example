@@ -16,17 +16,14 @@
               <pdfaid:part>3</pdfaid:part>
               <pdfaid:conformance>B</pdfaid:conformance>
             </rdf:Description>
-            <rdf:Description rdf:about=""
-                             xmlns:dc="http://purl.org/dc/elements/1.1/">
-              <dc:title><xsl:value-of select="concat(/invoice/creditor/address/name, ': Rechnung ', /invoice/id)"/></dc:title>
-              <dc:creator><xsl:value-of select="/invoice/creditor/address/name"/></dc:creator>
-              <dc:description><xsl:value-of select="/invoice/title"/></dc:description>
-            </rdf:Description>
-            <rdf:Description rdf:about=""
-                             xmlns:xmp="http://ns.adobe.com/xap/1.0/">
+            <rdf:Description xmlns:xmp="http://ns.adobe.com/xap/1.0/" rdf:about="">
               <xmp:CreatorTool>Willhöft IT-Beratung GmbH, Camel ZugFERD Route 0.1</xmp:CreatorTool>
             </rdf:Description>
-            <!-- This is just the static embedded schema. Nothing to change here -->
+            <!-- 
+              If this extension schema fails PDF/A 3 validation, be sure to not use Saxon as default transformer.
+              Apache FOP 2.10 generates invalid XML here otherwise, see https://issues.apache.org/jira/browse/FOP-3217
+              This is just the static embedded schema. Nothing to change here 
+            -->
             <rdf:Description xmlns:pdfaExtension="http://www.aiim.org/pdfa/ns/extension/" xmlns:pdfaSchema="http://www.aiim.org/pdfa/ns/schema#" xmlns:pdfaProperty="http://www.aiim.org/pdfa/ns/property#" rdf:about="">
               <pdfaExtension:schemas>
                 <rdf:Bag>
