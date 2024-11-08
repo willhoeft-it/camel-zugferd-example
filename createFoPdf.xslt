@@ -75,12 +75,12 @@
                 </rdf:Bag>
               </pdfaExtension:schemas>
             </rdf:Description>
+            <!-- Reference to our embedded file. Keep ConformanceLevel in sync with the generated xml. -->
             <rdf:Description xmlns:fx="urn:factur-x:pdfa:CrossIndustryDocument:invoice:1p0#" rdf:about="">
-              <!-- Reference to our embedded file -->
               <fx:DocumentType>INVOICE</fx:DocumentType>
               <fx:DocumentFileName>factur-x.xml</fx:DocumentFileName>
               <fx:Version>1.0</fx:Version>
-              <fx:ConformanceLevel>EN 16931</fx:ConformanceLevel>
+              <fx:ConformanceLevel>EXTENDED</fx:ConformanceLevel>
             </rdf:Description>
           </rdf:RDF>
         </x:xmpmeta>
